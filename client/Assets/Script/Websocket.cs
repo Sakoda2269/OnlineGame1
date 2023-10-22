@@ -57,7 +57,7 @@ public class Websocket : MonoBehaviour
                             enemies.Add(players[i].ToString(), joinedEnemy);
                             joinedEnemy.GetComponent<Enemy>().name = 
                                 message["data"]["id_name"][players[i].ToString()].ToString();
-                            GameObject nameTag = joinedEnemy.transform.GetChild(0).gameObject;
+                            GameObject nameTag = joinedEnemy.transform.GetChild(1).gameObject;
                             GameObject canvas = nameTag.transform.GetChild(0).gameObject;
                             GameObject text = canvas.transform.GetChild(0).gameObject;
                             text.GetComponent<TMP_Text>().text = joinedEnemy.GetComponent<Enemy>().name;
@@ -70,7 +70,7 @@ public class Websocket : MonoBehaviour
                     enemies.Add(message["id"].ToString(), joinedEnemy);
                     Debug.Log(message["data"]["id_name"][message["id"].ToString()]);
                     joinedEnemy.GetComponent<Enemy>().name = message["data"]["id_name"][message["id"].ToString()].ToString();
-                    GameObject nameTag = joinedEnemy.transform.GetChild(0).gameObject;
+                    GameObject nameTag = joinedEnemy.transform.GetChild(1).gameObject;
                     GameObject canvas = nameTag.transform.GetChild(0).gameObject;
                     GameObject text = canvas.transform.GetChild(0).gameObject;
                     text.GetComponent<TMP_Text>().text = joinedEnemy.GetComponent<Enemy>().name;
@@ -95,7 +95,7 @@ public class Websocket : MonoBehaviour
                     try{
                         enemies[message["id"].ToString()].GetComponent<Enemy>().UpdatePosRot(pos, rot, state);
                         Vector3 tagDire = pos - myPlayer.transform.position;
-                        GameObject nameTag = enemies[message["id"].ToString()].transform.GetChild(0).gameObject;
+                        GameObject nameTag = enemies[message["id"].ToString()].transform.GetChild(1).gameObject;
                         Quaternion q = Quaternion.LookRotation(tagDire);
                         Vector3 rotation = q.eulerAngles;
                         rotation.x = 0;

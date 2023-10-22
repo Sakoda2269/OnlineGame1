@@ -45,6 +45,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.room_id,
             self.channel_name
         )
+        self.joined.discard(self.myid)
+        self.id_name.pop(self.myid)
         return await super().disconnect(code)
     
     async def receive(self, text_data=None, bytes_data=None):

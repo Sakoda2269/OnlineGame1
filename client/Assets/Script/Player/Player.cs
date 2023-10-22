@@ -7,13 +7,15 @@ using Newtonsoft.Json;
 public class Player : Entity
 {
     Rigidbody rb;
-    public float _speed = 10f;
+    public float _speed = 10;
     public float sensitiveRotate = 5.0f;
     public float jumpPower = 10.0f;
-    private bool isJumping = false;
-    public float speedMagnification = 5; //調整必要　例10
+    public float speedMagnification = 10; //調整必要　例10
     public Vector3 movingVelocity;
+    public GameObject Item;
+    private ItemBase item;
     Vector3 movingDirecion;
+    private bool isJumping = false;
     private Animator anim;
     private int sprinting = 1;
     private int jumpCount = 0;
@@ -23,6 +25,8 @@ public class Player : Entity
     protected override void init(){
         rb = this.GetComponent<Rigidbody>();
         anim = this.gameObject.GetComponent<Animator>();
+        GameObject tmpItem = Instantiate(Item);
+        item = tmpItem.GetComponent<ItemBase>();
     }
     protected override void ExtraUpdate(){
         Transform mytrans = this.transform;
@@ -75,7 +79,7 @@ public class Player : Entity
 
         movingDirecion = transform.rotation *  new Vector3(x, 0, z);
         movingDirecion.Normalize();//斜めの距離が長くなるのを防ぎます
-        movingVelocity = sprinting * movingDirecion * speedMagnification;
+        movingVelocity = sprinting * movingDirecion * speedMagnification * 0.015f;
         
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping) {
             rb.AddForce(transform.up * jumpPower, ForceMode.Impulse);
@@ -88,11 +92,22 @@ public class Player : Entity
             anim.SetBool("Grounded", false);
 	    }
 
+        if (Input.GetMouseButton(0)) {
+            item.UseItem(this.gameObject);
+        }
+
     }
 
     void FixedUpdate() {
 
-	    rb.velocity = new Vector3(movingVelocity.x, rb.velocity.y, movingVelocity.z);
+	    // rb.velocity = new Vector3(movingVelocity.x, rb.velocity.y, movingVelocity.z);
+        Ray ray = new Ray(this.gameObject.transform.GetChild(0).gameObject.transform.position,
+         new Vector3(movingVelocity.x, 0, movingVelocity.z));
+        RaycastHit hit;
+        if(!Physics.Raycast(ray, out hit, 0.5f))
+        {
+            rb.MovePosition(rb.position + new Vector3(movingVelocity.x, 0, movingVelocity.z));
+        }
 
     }
 
