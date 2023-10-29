@@ -14,6 +14,7 @@ public class Websocket : MonoBehaviour
     public GameObject playerObject;
     public GameObject enemyObject;
     public GameObject chat;
+    public GameObject hotBar;
     private GameObject myPlayer;
     private Dictionary<string, GameObject> enemies = new Dictionary<string, GameObject>();
     private Queue<Tuple<string, Vector3>> enemieIdPos = new Queue<Tuple<string, Vector3>>();
@@ -30,6 +31,7 @@ public class Websocket : MonoBehaviour
             myPlayer = Instantiate(playerObject, new Vector3(-33, 4, -5), Quaternion.identity);
             playerScript = myPlayer.GetComponent<Player>();
             playerScript.name = myname;
+            playerScript.SetHotBar(hotBar);
             playerScript.Join(ws);
         };
 
@@ -49,6 +51,7 @@ public class Websocket : MonoBehaviour
             if(message["method"].ToString().Equals("join")){
                 if(playerScript.myid.Equals("")){
                     playerScript.myid = message["id"].ToString();
+                    playerScript.ws = ws;
                     JArray players = (JArray)message["data"]["joined"];
                     for(int i = 0; i < players.Count(); i++){
                         GameObject joinedEnemy;

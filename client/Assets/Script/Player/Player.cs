@@ -12,21 +12,24 @@ public class Player : Entity
     public float jumpPower = 10.0f;
     public float speedMagnification = 10; //調整必要　例10
     public Vector3 movingVelocity;
-    public GameObject Item;
-    private ItemBase item;
+    public WebSocket ws;
+    // public GameObject Item;
+    // private ItemBase item;
     Vector3 movingDirecion;
     private bool isJumping = false;
     private Animator anim;
     private int sprinting = 1;
     private int jumpCount = 0;
     private float animSpeed = 0;
+    private HotBar hotbar;
 
     // Start is called before the first frame update
     protected override void init(){
         rb = this.GetComponent<Rigidbody>();
         anim = this.gameObject.GetComponent<Animator>();
-        GameObject tmpItem = Instantiate(Item);
-        item = tmpItem.GetComponent<ItemBase>();
+        // GameObject tmpItem = Instantiate(Item);
+        // item = tmpItem.GetComponent<ItemBase>();
+        
     }
     protected override void ExtraUpdate(){
         Transform mytrans = this.transform;
@@ -93,7 +96,8 @@ public class Player : Entity
 	    }
 
         if (Input.GetMouseButton(0)) {
-            item.UseItem(this.gameObject);
+            // item.UseItem(this.gameObject);
+            hotbar.Use(this.gameObject);
         }
 
     }
@@ -163,5 +167,9 @@ public class Player : Entity
             anim.SetBool("Jump", false);
             anim.SetBool("Grounded", true);
         }
+    }
+
+    public void SetHotBar(GameObject hotbarObj){
+        hotbar = hotbarObj.GetComponent<HotBar>();
     }
 }

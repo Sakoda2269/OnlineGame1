@@ -37,4 +37,11 @@ public abstract class ItemBase : MonoBehaviour
     }
     public abstract void Use(GameObject user);
     protected abstract void init();
+
+    public int GetCoolDown(){
+        return cooldown;
+    }
+    public int GetMaxCoolDown(){
+        return maxCooldown;
+    }
 }

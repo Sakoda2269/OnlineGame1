@@ -5,6 +5,7 @@ using UnityEngine;
 public class Camera_1 : MonoBehaviour
 {
     public float sensitiveRotate = 1.0f;
+    public GameObject firePos;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +27,6 @@ public class Camera_1 : MonoBehaviour
         else if(muki <= 60 && rotateY < 0){
             mytrans.Rotate(-rotateY, 0, 0);
         }
+        firePos.transform.rotation = mytrans.rotation;
     }
 }

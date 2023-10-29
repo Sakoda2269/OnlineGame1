@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - Floor
+  - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - Entity
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Bullet
   - 
   - 
   - 
