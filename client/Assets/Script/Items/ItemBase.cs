@@ -8,6 +8,7 @@ public abstract class ItemBase : MonoBehaviour
     protected int maxCooldown;
     protected int cooldown;
     protected GameObject parent;
+    public string myname;
 
     // Start is called before the first frame update
     void Start()
@@ -29,14 +30,17 @@ public abstract class ItemBase : MonoBehaviour
         parent = user;
     }
 
-    public void UseItem(GameObject user){
+    public bool UseItem(GameObject user){
         if(cooldown <= 0){
             Use(user);
             cooldown = maxCooldown;
+            return true;
         }
+        return false;
     }
     public abstract void Use(GameObject user);
     protected abstract void init();
+    public abstract string GetName();
 
     public int GetCoolDown(){
         return cooldown;

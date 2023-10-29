@@ -8,6 +8,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     joined = set()
     id_name = dict()
+    id_items = dict()
     myid = ""
 
     async def connect(self):
@@ -47,6 +48,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
         self.joined.discard(self.myid)
         self.id_name.pop(self.myid)
+        self.id_items.pop(self.myid)
         return await super().disconnect(code)
     
     async def receive(self, text_data=None, bytes_data=None):
@@ -55,6 +57,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             new_id = self.myid
             self.joined.add(new_id)
             self.id_name[new_id] = data["name"]
+            self.id_items[new_id] = data["items"]
+            print(data)
             print(data["name"], "joined!")
             await self.channel_layer.group_send(
                 self.room_id,
@@ -65,6 +69,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "name" : data["name"],
                     "data":{
                         "joined":list(self.joined),
+                        "id_items":self.id_items,
                         "id_name":self.id_name
                     }
                 }
@@ -125,6 +130,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                     "data":send_data
                 }
             )
+        if(data["method"] == "useItem"):
+            print(data)
+
+        if(data["method"] == "test"):
+            print(data["data"])
 
             
     

@@ -14,5 +14,8 @@ public class Rifle : ItemBase
         + 0.8f * user.transform.GetChild(0).gameObject.transform.forward;
         Instantiate(bullet, pos, user.transform.GetChild(0).gameObject.transform.rotation);
     }
+    public override string GetName(){
+        return "Rifle";
+    }
 
 }

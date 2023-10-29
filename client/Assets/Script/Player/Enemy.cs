@@ -29,4 +29,11 @@ public class Enemy : Entity
         anim.SetFloat("Speed", state["speed"]);
         
     }
+    public void SetItems(string[] itemNames){
+        for(int i = 0; i < itemNames.Length; i++){
+            if(!itemNames[i].Equals("null")){
+                items[i] = Instantiate((GameObject)Resources.Load("Items/" + itemNames[i]));
+            }
+        }
+    }
 }

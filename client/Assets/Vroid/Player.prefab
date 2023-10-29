@@ -396,12 +396,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myid: 
   name: 
+  items:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _speed: 10
   sensitiveRotate: 5
   jumpPower: 10
   speedMagnification: 5
   movingVelocity: {x: 0, y: 0, z: 0}
-  Item: {fileID: 0}
+  itemObjects:
+  - {fileID: 3509633382289293507, guid: 72cc9cf75df36744da489e10426187b3, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &424947494131115957
 GameObject:
   m_ObjectHideFlags: 0

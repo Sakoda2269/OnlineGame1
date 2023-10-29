@@ -13,6 +13,7 @@ public class Player : Entity
     public float speedMagnification = 10; //調整必要　例10
     public Vector3 movingVelocity;
     public WebSocket ws;
+    public GameObject[] itemObjects = new GameObject[10];
     // public GameObject Item;
     // private ItemBase item;
     Vector3 movingDirecion;
@@ -22,11 +23,18 @@ public class Player : Entity
     private int jumpCount = 0;
     private float animSpeed = 0;
     private HotBar hotbar;
+    private GameObject firePos;
 
     // Start is called before the first frame update
     protected override void init(){
         rb = this.GetComponent<Rigidbody>();
         anim = this.gameObject.GetComponent<Animator>();
+        firePos = this.gameObject.transform.GetChild(1).gameObject;
+        for(int i = 0; i < itemObjects.Length; i++){
+            if(itemObjects[i]){
+                items[i] = Instantiate(itemObjects[i]);
+            }
+        }
         // GameObject tmpItem = Instantiate(Item);
         // item = tmpItem.GetComponent<ItemBase>();
         
@@ -97,7 +105,25 @@ public class Player : Entity
 
         if (Input.GetMouseButton(0)) {
             // item.UseItem(this.gameObject);
-            hotbar.Use(this.gameObject);
+            if(items[hotbar.selectNum].GetComponent<ItemBase>().UseItem(this.gameObject)){
+                Transform trans = firePos.transform;
+                ItemUseData sendData = new ItemUseData{
+                    id=myid,
+                    method="useItem",
+                    pos = new Dictionary<string, float>{
+                        {"x", trans.position.x},
+                        {"y", trans.position.y},
+                        {"z", trans.position.z}
+                    },
+                    rotate = new Dictionary<string, float>{
+                        {"x", trans.localEulerAngles.x},
+                        {"y", trans.localEulerAngles.y},
+                        {"z", trans.localEulerAngles.z}
+                    },
+                    itemNum = hotbar.selectNum
+                };
+                ws.SendText(JsonConvert.SerializeObject(sendData));
+            };
         }
 
     }
@@ -111,6 +137,12 @@ public class Player : Entity
         if(!Physics.Raycast(ray, out hit, 0.5f))
         {
             rb.MovePosition(rb.position + new Vector3(movingVelocity.x, 0, movingVelocity.z));
+        }
+
+        for(int i = 0; i < items.Length; i++){
+            if(items[i]){
+                hotbar.SetSliderValue(i, (float)(items[i].GetComponent<ItemBase>().GetCoolDown()) / items[i].GetComponent<ItemBase>().GetMaxCoolDown());
+            }
         }
 
     }
@@ -143,9 +175,24 @@ public class Player : Entity
     }
 
     public void Join(WebSocket ws){
-        Dictionary<string, string> sendData = new Dictionary<string, string>{
-            {"method", "join"},
-            {"name", name}
+        // Dictionary<string, string> sendData = new Dictionary<string, string>{
+        //     {"method", "join"},
+        //     {"name", name},
+        // };
+        List<string> itemNames = new List<string>();
+        for(int i = 0; i < itemObjects.Length; i++){
+            if(itemObjects[i]){
+                itemNames.Add(itemObjects[i].GetComponent<ItemBase>().GetName());
+            }
+            else{
+                itemNames.Add("null");
+            }
+        }
+        JoinData sendData = new JoinData{
+            id=myid,
+            name=name,
+            method="join",
+            items = itemNames
         };
         ws.SendText(JsonConvert.SerializeObject(sendData));
     }

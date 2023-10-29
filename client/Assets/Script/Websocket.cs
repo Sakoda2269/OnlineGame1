@@ -57,6 +57,12 @@ public class Websocket : MonoBehaviour
                         GameObject joinedEnemy;
                         joinedEnemy = Instantiate(enemyObject);
                         try{
+                            JArray itemNames = (JArray)message["data"]["id_items"][players[i].ToString()];
+                            List<string> itemNameList = new List<string>();
+                            for(int j = 0; j < itemNames.Count(); j++){
+                                itemNameList.Add(itemNames[i].ToString());
+                            }
+                            joinedEnemy.GetComponent<Enemy>().SetItems(itemNameList.ToArray());
                             enemies.Add(players[i].ToString(), joinedEnemy);
                             joinedEnemy.GetComponent<Enemy>().name = 
                                 message["data"]["id_name"][players[i].ToString()].ToString();
@@ -72,6 +78,12 @@ public class Websocket : MonoBehaviour
                     GameObject joinedEnemy = Instantiate(enemyObject);
                     enemies.Add(message["id"].ToString(), joinedEnemy);
                     Debug.Log(message["data"]["id_name"][message["id"].ToString()]);
+                    JArray itemNames = (JArray)message["data"]["id_items"][message["id"].ToString()];
+                    List<string> itemNameList = new List<string>();
+                    for(int j = 0; j < itemNames.Count(); j++){
+                        itemNameList.Add(itemNames[message["id"].ToString()].ToString());
+                    }
+                    joinedEnemy.GetComponent<Enemy>().SetItems(itemNameList.ToArray());
                     joinedEnemy.GetComponent<Enemy>().name = message["data"]["id_name"][message["id"].ToString()].ToString();
                     GameObject nameTag = joinedEnemy.transform.GetChild(1).gameObject;
                     GameObject canvas = nameTag.transform.GetChild(0).gameObject;

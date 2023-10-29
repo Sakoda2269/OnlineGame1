@@ -13,4 +13,7 @@ public class Leap : ItemBase
     protected override void init(){
         maxCooldown = 100;
     }
+    public override string GetName(){
+        return "Leap";
+    }
 }

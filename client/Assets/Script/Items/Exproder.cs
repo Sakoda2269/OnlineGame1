@@ -17,6 +17,11 @@ public class Exproder : ItemBase
 
     protected override void init(){
         maxCooldown = 100;
+        myname = "Exproder";
+    }
+
+    public override string GetName(){
+        return "Exproder";
     }
 
     public void Exprode(GameObject bullet){

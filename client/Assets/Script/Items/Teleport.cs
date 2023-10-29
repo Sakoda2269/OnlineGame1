@@ -21,4 +21,8 @@ public class Teleport : ItemBase
         maxCooldown = 200;
     }
 
+    public override string GetName(){
+        return "Teleport";
+    }
+
 }
