@@ -10,6 +10,7 @@ using TMPro;
 
 public class Websocket : MonoBehaviour
 {
+    // todo アイテムの使用をほかのプレイヤーに伝える
     WebSocket ws;
     public GameObject playerObject;
     public GameObject enemyObject;
